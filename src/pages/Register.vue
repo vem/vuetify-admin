@@ -5,14 +5,21 @@
         <span class="text-h5">Vuetify Admin</span>
       </v-col>
     </v-row>
-    <div class="pa-6 mx-auto mt-8 login-box">
+    <div class="pa-6 mx-auto mt-8 register-box">
       <v-form ref="form" v-model="valid" lazy-validation>
         <v-row>
           <v-col cols="12">
             <div class="text-center font-weight-light text-subtitle-1">
-              Sign in to start your session
+              Register a new membership
             </div>
             <div>
+              <v-text-field
+                label="Full name"
+                v-model="fullName"
+                :rules="fullNameRules"
+                hide-details="auto"
+                prepend-icon="mdi-account"
+              ></v-text-field>
               <v-text-field
                 label="Email"
                 v-model="email"
@@ -28,18 +35,46 @@
                 hide-details="auto"
                 prepend-icon="mdi-lock"
               ></v-text-field>
+              <v-text-field
+                type="password"
+                label="Retype password"
+                v-model="rePassword"
+                :rules="rePasswordRules"
+                hide-details="auto"
+                prepend-icon="mdi-repeat"
+                v-validate="'required|confirmed:password'"
+              ></v-text-field>
             </div>
           </v-col>
           <v-col cols="12">
             <v-checkbox
-              label="Remember Me"
               class="mt-0"
               hide-details="auto"
-            ></v-checkbox>
+              :rules="[(v) => !!v || 'You must agree to continue!']"
+            >
+              <template v-slot:label>
+                <div>
+                  I agree to the
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on }">
+                      <a
+                        target="_blank"
+                        href="http://vuetifyjs.com"
+                        @click.stop
+                        v-on="on"
+                      >
+                        terms
+                      </a>
+                    </template>
+                    Opens in new window
+                  </v-tooltip>
+                </div>
+              </template>
+            </v-checkbox>
           </v-col>
           <v-col cols="12" class="text-center">
-            <v-btn elevation="2" color="primary" @click="userSignIn"
-              >Sign In</v-btn
+            <v-btn elevation="2" color="primary" @click="userRegister"
+              >Register</v-btn
             >
           </v-col>
           <v-col cols="12" class="text-center font-weight-light">- OR -</v-col>
@@ -54,8 +89,7 @@
             </v-btn>
           </v-col>
           <v-col cols="12 body-2">
-            <a href="#">I forgot my password</a><br />
-            <router-link to="/register">Register a new membership</router-link>
+            <router-link to="/login">I already have a membership</router-link>
           </v-col>
         </v-row>
       </v-form>
@@ -67,6 +101,12 @@
 export default {
   data: () => ({
     valid: true,
+    fullName: "",
+    fullNameRules: [
+      (v) => !!v || "Full name is required",
+      (v) =>
+        (v && v.length >= 6) || "Full name must be greater than 6 characters",
+    ],
     email: "",
     emailRules: [
       (v) => !!v || "E-mail is required",
@@ -78,10 +118,16 @@ export default {
       (v) =>
         (v && v.length >= 6) || "Password must be greater than 6 characters",
     ],
+    rePassword: "",
+    rePasswordRules: [
+      (v) => !!v || "Retype password is required",
+      (v) =>
+        (v && v.length >= 6) || "Password must be greater than 6 characters",
+    ],
   }),
 
   methods: {
-    userSignIn() {
+    userRegister() {
       this.$refs.form.validate();
     },
   },
@@ -91,15 +137,15 @@ export default {
 <style lang="scss">
 .v-application {
   background-color: #d2d6de !important;
-  .login-box {
+  .register-box {
     background-color: #ffffff;
   }
 }
-.login-box {
+.register-box {
   width: 400px;
 }
 @media (max-width: 768px) {
-  .login-box {
+  .register-box {
     width: 90%;
   }
 }

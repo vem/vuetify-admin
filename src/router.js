@@ -15,6 +15,13 @@ const routes = [
       title: 'Log in'
     }
   },
+  {
+    name: 'register',
+    component: () => import('./pages/Register.vue'),
+    meta: {
+      title: 'Registration Page'
+    }
+  },
 ];
 
 // add route path
