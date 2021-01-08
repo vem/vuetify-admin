@@ -1,26 +1,40 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+import Layout from './views/Layout.vue'
+import Dashboard from './views/Dashboard.vue'
 
 Vue.use(Router);
 
 const routes = [
   {
     path: '*',
-    redirect: '/login'
+    redirect: '/dashboard'
   },
   {
     name: 'login',
-    component: () => import('./pages/Login.vue'),
+    component: () => import('./views/Login.vue'),
     meta: {
       title: 'Log in'
     }
   },
   {
     name: 'register',
-    component: () => import('./pages/Register.vue'),
+    component: () => import('./views/Register.vue'),
     meta: {
       title: 'Registration Page'
     }
+  },
+  {
+    path: '/',
+    component: Layout,
+    children: [
+      {
+        path: '/dashboard', component: Dashboard, name: 'Dashboard',
+        meta: {
+          title: 'Dashboard'
+        }
+      },
+    ]
   },
 ];
 
