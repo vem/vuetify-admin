@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Layout from './views/Layout.vue'
-import Dashboard from './views/Dashboard.vue'
 
 Vue.use(Router);
 
@@ -29,9 +28,15 @@ const routes = [
     component: Layout,
     children: [
       {
-        path: '/dashboard', component: Dashboard, name: 'Dashboard',
+        path: '/dashboard', component: () => import('./views/Dashboard.vue'),
         meta: {
           title: 'Dashboard'
+        }
+      },
+      {
+        path: '/tables', component: () => import('./views/Tables.vue'),
+        meta: {
+          title: 'Tables'
         }
       },
     ]
